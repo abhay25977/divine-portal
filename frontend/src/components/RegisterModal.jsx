@@ -276,8 +276,8 @@ const RegisterModal = ({ isOpen, onClose }) => {
                         onChange={handleChange}
                         className="px-3 py-2 bg-gray-100 border border-gray-300 rounded text-sm"
                       >
-                        <option value="+91">India (+91)</option>
-                        <option value="+977">Nepal (+977)</option>
+                        <option value="+91">Nepal (+977)</option>
+                        <option value="+977">India (+91)</option>
                         <option value="+1">USA (+1)</option>
                         <option value="+44">UK (+44)</option>
                       </select>
@@ -422,7 +422,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
                         type="text"
                         name="schoolName"
                         required
-                        placeholder="SchoolName"
+                        placeholder="School Name"
                         value={formData.schoolName}
                         onChange={handleChange}
                         className="input-style"
@@ -463,8 +463,8 @@ const RegisterModal = ({ isOpen, onClose }) => {
                           onChange={handleChange}
                           className="px-3 py-2 bg-gray-100 border border-gray-300 rounded text-sm"
                         >
-                          <option value="+91">India (+91)</option>
-                          <option value="+977">Nepal (+977)</option>
+                          <option value="+91">Nepal (+977)</option>
+                          <option value="+977">India (+91)</option>
                           <option value="+1">USA (+1)</option>
                           <option value="+44">UK (+44)</option>
                         </select>
