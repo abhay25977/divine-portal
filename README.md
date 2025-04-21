@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-# divine-portal
-=======
->>>>>>> 6d4086d (Initial commit 🚀)
-## 🚀 Getting Started
 
 Follow the steps below to set up and run this project locally on your machine.
 
@@ -32,9 +25,3 @@ npm run dev
 💡 Notes
 Ensure you have Node.js and npm installed.
 Update any .env files if required (e.g., database URI, API keys).
-<<<<<<< HEAD
-If your frontend and backend are in separate folders, navigate to each and run the commands respectively.
-=======
-If your frontend and backend are in separate folders, navigate to each and run the commands respectively.
->>>>>>> 766eb2a (Initial commit 🚀)
->>>>>>> 6d4086d (Initial commit 🚀)
