@@ -476,7 +476,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
                         type="text"
                         name="courseType"
                         required
-                        placeholder="Course Type (eg. Regular)"
+                        placeholder="Course Type (e.g. Regular)"
                         value={formData.courseType}
                         onChange={handleChange}
                         className="input-style"
@@ -485,10 +485,10 @@ const RegisterModal = ({ isOpen, onClose }) => {
                         type="text"
                         name="courseDuration"
                         required
-                        placeholder="Course Duration"
+                        placeholder="Course Duration (e.g. 1 Year/ 6 Months)"
                         value={formData.courseDuration}
                         onChange={handleChange}
-                        className="input-style"
+                        className="input-style placeholder:text-sm"
                       />
 
                       {/* PARENT DETAILS  */}
