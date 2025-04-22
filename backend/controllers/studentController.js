@@ -26,7 +26,6 @@ const generateStudentId = async ({ branch, district, academicYear, medium, grade
 };
 
 
-
 export const registerStudent = async (req, res) => {
   try {
     const {
@@ -54,17 +53,22 @@ export const registerStudent = async (req, res) => {
       contact,
       fatherName,
       motherName,
-      fatherContact: String,
+      fatherContact,
       fatherOccupation,
       motherOccupation,
       guardianName,
       guardianRelation
     } = req.body;
 
-    const profilePicture = req.file?.path || ''; // From Cloudinary or other storage
+    let profilePicture = req.body.profilePicture; // Already a URL from Cloudinary
+    
+    // if (profilePicture) {
+    //   const uploadedResponse = await cloudinary.uploader.upload(profilePicture);
+    //   profilePicture = uploadedResponse.secure_url;
+    // }
 
     // Basic validation
-    if (!email || !password || !firstName || !dob || !grade || !academicYear || !medium || !gender || !branch) {
+    if (!email || !password || !firstName || !dob || !grade || !academicYear || !medium || !gender || !branch || !profilePicture) {
       return res.status(400).json({ message: "Required fields are missing" });
     }
 
@@ -83,7 +87,6 @@ export const registerStudent = async (req, res) => {
       // Core Info
       branch,
       district,
-      profilePicture,
       firstName,
       middleName,
       lastName,
@@ -115,20 +118,20 @@ export const registerStudent = async (req, res) => {
       // Guardian
       fatherName,
       motherName,
-      fatherContact: String,
+      fatherContact,
       fatherOccupation,
       motherOccupation,
       guardianName,
       guardianRelation,
-
-      studentId
+      studentId,
+      profilePicture,
     });
 
     await newStudent.save();
 
     res.status(201).json({
       message: "Student Registered Successfully",
-      studentId
+      studentId,
     });
 
   } catch (error) {

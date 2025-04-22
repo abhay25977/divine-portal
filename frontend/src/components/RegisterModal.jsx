@@ -64,21 +64,21 @@ const RegisterModal = ({ isOpen, onClose }) => {
     }));
   };
 
-  // const handleProfilePictureUpload = async (e) => {
-  //   const file = e.target.files[0];
-  //   if (!file) return;
+  const handleProfilePictureUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-  //   const data = new FormData();
-  //   data.append("file", file);
-  //   data.append("upload_preset", "divine-academy");
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "divine-academy");
 
-  //   try {
-  //     const res = await axios.post("https://api.cloudinary.com/v1_1/your_cloud_name/image/upload", data);
-  //     setFormData((prev) => ({ ...prev, profilePicture: res.data.secure_url }));
-  //   } catch (err) {
-  //     console.error("Profile picture upload failed", err);
-  //   }
-  // };
+    try {
+      const res = await axios.post("https://api.cloudinary.com/v1_1/dd2u7z5bc/image/upload", data);
+      setFormData((prev) => ({ ...prev, profilePicture: res.data.secure_url }));
+    } catch (err) {
+      console.error("Profile picture upload failed", err);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -141,6 +141,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
       formData.contact,
       formData.dob,
       formData.branch,
+      formData.profilePicture,
       formData.religion,
       formData.courseType,
       formData.grade,
@@ -514,6 +515,28 @@ const RegisterModal = ({ isOpen, onClose }) => {
                         onChange={handleChange}
                         className="input-style"
                       />
+                      <div className="mb-4">
+                        <label className="block mb-1 font-medium">Upload Profile Picture</label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleProfilePictureUpload}
+                          required
+                          className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
+                          file:rounded-md file:border-0
+                          file:text-sm file:font-semibold
+                         file:bg-yellow-50 file:text-yellow-700
+                          hover:file:bg-yellow-100
+                          dark:file:bg-gray-800 dark:file:text-yellow-400 dark:hover:file:bg-gray-700"
+                        />
+                        {formData.profilePicture && (
+                          <img
+                            src={formData.profilePicture}
+                            alt="Profile Preview"
+                            className="mt-2 w-20 h-20 rounded-full object-cover border border-gray-300 dark:border-gray-600"
+                          />
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>

@@ -62,6 +62,11 @@ const Navbar = () => {
           <div className="bg-white text-red-600 px-3 py-1 rounded shadow-md font-medium">
             User Name: {authUser?.name}
           </div>
+          <img
+            src={authUser?.profilePicture || "/avatar-placeholder.png"}
+            className="w-10 h-10 rounded-full border-2 border-yellow-400 object-cover"
+            alt="User Avatar"
+          />
           <button
             onClick={handleLogout}
             className="bg-yellow-400 text-red-900 px-3 py-1 rounded hover:bg-yellow-300"
