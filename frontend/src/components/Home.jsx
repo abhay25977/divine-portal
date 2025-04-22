@@ -103,7 +103,7 @@ const Home = () => {
             onClick={() => setShowLoginModal(true)}
             className="bg-orange-500 text-white px-5 py-2 rounded-lg font-semibold shadow-md hover:bg-orange-600 transition duration-300"
           >
-            Sing in
+            Sign in
           </button>
           <button
             onClick={() => setShowRegisterModal(true)}

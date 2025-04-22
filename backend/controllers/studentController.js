@@ -68,7 +68,7 @@ export const registerStudent = async (req, res) => {
     // }
 
     // Basic validation
-    if (!email || !password || !firstName || !dob || !grade || !academicYear || !medium || !gender || !branch || !profilePicture) {
+    if (!email || !password || !firstName || !dob || !grade || !academicYear || !medium || !gender || !branch) {
       return res.status(400).json({ message: "Required fields are missing" });
     }
 
@@ -130,7 +130,6 @@ export const registerStudent = async (req, res) => {
     await newStudent.save();
 
     res.status(201).json({
-      message: "Student Registered Successfully",
       studentId,
     });
 

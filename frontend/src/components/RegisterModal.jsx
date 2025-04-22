@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
@@ -7,6 +10,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import { format } from 'date-fns';
 
 const RegisterModal = ({ isOpen, onClose }) => {
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
+
   const [formData, setFormData] = useState({
     userType: "",
     firstName: "",
@@ -73,19 +79,32 @@ const RegisterModal = ({ isOpen, onClose }) => {
     data.append("upload_preset", "divine-academy");
 
     try {
-      const res = await axios.post("https://api.cloudinary.com/v1_1/dd2u7z5bc/image/upload", data);
+      setIsUploading(true);
+      setUploadProgress(0);
+
+      const res = await axios.post("https://api.cloudinary.com/v1_1/dd2u7z5bc/image/upload", data, {
+        onUploadProgress: (progressEvent) => {
+          const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setUploadProgress(percent);
+        },
+      });
+
       setFormData((prev) => ({ ...prev, profilePicture: res.data.secure_url }));
     } catch (err) {
       console.error("Profile picture upload failed", err);
+    } finally {
+      setIsUploading(false);
     }
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const apiEndpoint = `http://localhost:4010/api/${formData.userType.toLowerCase()}/register`;
       const res = await axios.post(apiEndpoint, formData);
-      setMessage(res.data.message);
+
+      toast.success(res.data.message || "Registration successful!");
 
       setFormData({
         userType: "",
@@ -127,7 +146,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
       }, 2000);
     } catch (err) {
       console.error(err);
-      setMessage(err.response?.data?.message || "Registration failed");
+      toast.error(err.response?.data?.message || "Registration failed");
     }
   };
 
@@ -180,6 +199,17 @@ const RegisterModal = ({ isOpen, onClose }) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+          />
           <motion.div
             className="bg-white dark:bg-gray-900 text-black dark:text-white w-full max-w-lg sm:max-w-3xl p-4 sm:p-6 rounded-xl shadow-xl relative overflow-y-auto max-h-[90vh]"
             initial={{ y: "-20%", opacity: 0 }}
@@ -289,6 +319,8 @@ const RegisterModal = ({ isOpen, onClose }) => {
                         required
                         value={formData.contact}
                         onChange={handleChange}
+                        onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, ''); }}
+                        maxLength={10} // Optional: limit to 10 digits
                         className="input-style"
                       />
                     </div>
@@ -476,6 +508,8 @@ const RegisterModal = ({ isOpen, onClose }) => {
                           required
                           value={formData.fatherContact}
                           onChange={handleChange}
+                          onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, ''); }}
+                          maxLength={10} // Optional: limit to 10 digits
                           className="input-style"
                         />
                       </div>
@@ -523,13 +557,24 @@ const RegisterModal = ({ isOpen, onClose }) => {
                           onChange={handleProfilePictureUpload}
                           required
                           className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-                          file:rounded-md file:border-0
-                          file:text-sm file:font-semibold
-                         file:bg-yellow-50 file:text-yellow-700
+                           file:rounded-md file:border-0
+                           file:text-sm file:font-semibold
+                          file:bg-yellow-50 file:text-yellow-700
                           hover:file:bg-yellow-100
                           dark:file:bg-gray-800 dark:file:text-yellow-400 dark:hover:file:bg-gray-700"
                         />
-                        {formData.profilePicture && (
+
+                        {isUploading && (
+                          <div className="mt-2 flex items-center gap-2">
+                            <svg className="animate-spin h-5 w-5 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                            </svg>
+                            <span className="text-sm text-gray-700 dark:text-gray-300">{uploadProgress}%</span>
+                          </div>
+                        )}
+
+                        {formData.profilePicture && !isUploading && (
                           <img
                             src={formData.profilePicture}
                             alt="Profile Preview"
@@ -537,6 +582,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
                           />
                         )}
                       </div>
+
                     </div>
                   )}
                 </div>
