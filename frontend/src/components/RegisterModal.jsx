@@ -26,6 +26,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
     medicalCondition: "",
     percentagePreviousClass: "",
     courseType: "",
+    courseDuration: "",
     grade: "",
     academicYear: "",
     month: "",
@@ -119,6 +120,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
         medicalCondition: "",
         percentagePreviousClass: "",
         courseType: "",
+        courseDuration: "",
         grade: "",
         academicYear: "",
         month: "",
@@ -163,6 +165,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
       formData.profilePicture,
       formData.religion,
       formData.courseType,
+      formData.courseDuration,
       formData.grade,
       formData.academicYear,
       formData.month,
@@ -321,7 +324,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
                         onChange={handleChange}
                         onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, ''); }}
                         maxLength={10} // Optional: limit to 10 digits
-                        className="input-style"
+                        className="input-style placeholder:text-sm"
                       />
                     </div>
 
@@ -469,6 +472,24 @@ const RegisterModal = ({ isOpen, onClose }) => {
                         onChange={handleChange}
                         className="input-style"
                       />
+                      <input
+                        type="text"
+                        name="courseType"
+                        required
+                        placeholder="Course Type (eg. Regular)"
+                        value={formData.courseType}
+                        onChange={handleChange}
+                        className="input-style"
+                      />
+                      <input
+                        type="text"
+                        name="courseDuration"
+                        required
+                        placeholder="Course Duration"
+                        value={formData.courseDuration}
+                        onChange={handleChange}
+                        className="input-style"
+                      />
 
                       {/* PARENT DETAILS  */}
                       <input
@@ -510,7 +531,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
                           onChange={handleChange}
                           onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, ''); }}
                           maxLength={10} // Optional: limit to 10 digits
-                          className="input-style"
+                          className="input-style placeholder:text-sm"
                         />
                       </div>
                       <input

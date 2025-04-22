@@ -32,16 +32,16 @@ const LoginModal = ({ isOpen, onClose }) => {
     e.preventDefault();
     setLoading(true);
     setErrorMsg("");
-  
+
     try {
       const res = await axios.post("http://localhost:4010/api/student/login", formData);
       const { token, student } = res.data;
-  
+
       localStorage.setItem("token", token);
       localStorage.setItem("student", JSON.stringify(student));
-  
+
       toast.success(res.data.message || "Login successful!");
-  
+
       onClose();
       navigate("/student/dashboard");
     } catch (err) {
@@ -51,7 +51,7 @@ const LoginModal = ({ isOpen, onClose }) => {
       setLoading(false);
     }
   };
-  
+
 
   const handleAdminRedirect = () => {
     onClose();
@@ -73,17 +73,6 @@ const LoginModal = ({ isOpen, onClose }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <ToastContainer
-              position="top-right"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="colored"
-            />
             <motion.div
               className="bg-white dark:bg-gray-900 text-black dark:text-white w-full max-w-md p-8 rounded-xl shadow-xl relative overflow-y-auto max-h-[90vh]"
               initial={{ y: "-20%", opacity: 0 }}
@@ -91,6 +80,19 @@ const LoginModal = ({ isOpen, onClose }) => {
               exit={{ y: "-20%", opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
+              <ToastContainer
+              position="top-center"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="colored"
+              toastClassName="w-full max-w-full rounded-none text-center shadow-lg"
+              bodyClassName="text-md font-semibold"
+            />
               {/* Close Button */}
               <button
                 onClick={onClose}

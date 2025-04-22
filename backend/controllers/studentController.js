@@ -41,6 +41,7 @@ export const registerStudent = async (req, res) => {
       medicalCondition,
       percentagePreviousClass,
       courseType,
+      courseDuration,
       grade,
       academicYear,
       month,
@@ -60,12 +61,7 @@ export const registerStudent = async (req, res) => {
       guardianRelation
     } = req.body;
 
-    let profilePicture = req.body.profilePicture; // Already a URL from Cloudinary
-    
-    // if (profilePicture) {
-    //   const uploadedResponse = await cloudinary.uploader.upload(profilePicture);
-    //   profilePicture = uploadedResponse.secure_url;
-    // }
+    let profilePicture = req.body.profilePicture;
 
     // Basic validation
     if (!email || !password || !firstName || !dob || !grade || !academicYear || !medium || !gender || !branch) {
@@ -97,6 +93,7 @@ export const registerStudent = async (req, res) => {
       medicalCondition,
       percentagePreviousClass,
       courseType,
+      courseDuration,
 
       // Academic Info
       grade,

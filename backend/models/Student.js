@@ -13,6 +13,7 @@ const studentSchema = new mongoose.Schema({
   percentagePreviousClass: String,
   courseType: String,
   branch: String,
+  courseDuration: String,
 
   // Academic Info
   grade: String,
