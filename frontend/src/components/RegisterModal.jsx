@@ -349,7 +349,9 @@ const RegisterModal = ({ isOpen, onClose }) => {
                         yearDropdownItemNumber={100}
                         placeholderText="Date of Birth"
                         className="input-style w-full"
+                        maxDate={new Date()} // 🔒 restricts to today or earlier
                       />
+
                       <input
                         type="text"
                         name="religion"
@@ -380,9 +382,15 @@ const RegisterModal = ({ isOpen, onClose }) => {
                         type="text"
                         name="percentagePreviousClass"
                         required
-                        placeholder="Previous Class Percentage"
+                        placeholder="Previous Class Percentage (e.g., 95)"
                         value={formData.percentagePreviousClass}
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          const regex = /^(100(\.0)?|[0-9]{1,2}(\.[0-9])?)?$/;
+                          if (value === '' || regex.test(value)) {
+                            handleChange(e);
+                          }
+                        }}
                         className="input-style"
                       />
                       <input
@@ -412,7 +420,13 @@ const RegisterModal = ({ isOpen, onClose }) => {
                         required
                         placeholder="Grade (eg. 11, 12)"
                         value={formData.grade}
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          const regex = /^(100(\.0)?|[0-9]{1,2}(\.[0-9])?)?$/;
+                          if (value === '' || regex.test(value)) {
+                            handleChange(e);
+                          }
+                        }}
                         className="input-style"
                       />
                       <input
