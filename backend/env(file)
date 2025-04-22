@@ -1,0 +1,15 @@
+PORT=4010
+MONGO_URI=mongodb+srv://akrajrbl:oWtYKXIzpjqEAm6j@cluster0.ijwjn34.mongodb.net/lms-coaching?retryWrites=true&w=majority&appName=Cluster0
+JWT_SECRET=
+
+CLOUDINARY_CLOUD_NAME=dd2u7z5bc
+CLOUDINARY_API_KEY=512981459318329
+CLOUDINARY_API_SECRET=h34pYBhwQKsceobqeZgeIDGLIlI
+
+FRONTEND_URL=http://localhost:5173
+BACKEND_URL=
+NODE_ENV=development
+
+# Admin Login Details
+email - divine.admin25977@gmail.com
+password - admin-divine@nepal@123
