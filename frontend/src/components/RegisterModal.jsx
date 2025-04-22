@@ -428,7 +428,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
                         type="text"
                         name="academicYear"
                         required
-                        placeholder="Academic Year (e.g. 2024-2025)"
+                        placeholder="Academic Year (e.g. 2025-2026)"
                         value={formData.academicYear}
                         onChange={handleChange}
                         className="input-style"
