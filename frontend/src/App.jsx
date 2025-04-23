@@ -6,14 +6,14 @@ import Home from "./components/Home";
 import LoginModal from "./pages/LoginModal";
 import RegisterModal from "./components/RegisterModal";
 
-import AdminLogin from "./components/AdminLogin";
-import AdminDashboard from "./components/AdminDashboard";
-import AdminPrivateRoute from "./components/AdminPrivateRoute";
+import AdminLogin from "./components/admin/AdminLogin";
+import AdminDashboard from "./components/admin/AdminDashboard";
+import AdminPrivateRoute from "./components/admin/AdminPrivateRoute";
+import ManageUsers from "./components/admin/ManageUsers";
 
-import ManageUsers from "./components/ManageUsers";
 import CoursePage from "./pages/CoursePage";
 
-import StudentDashboard from "./components/StudentDashboard";
+import StudentDashboard from "./components/Student/Dashboard/StudentDashboard";
 import PrivateRoute from "./components/PrivateRoute";
 
 // Student Sidebar Links Routes 
