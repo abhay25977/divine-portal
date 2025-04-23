@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { motion, AnimatePresence } from "framer-motion";
-import RegisterModal from "../components/RegisterModal";
+import RegisterModal from "./RegisterModal";
 
 const LoginModal = ({ isOpen, onClose }) => {
   const [showRegisterModal, setShowRegisterModal] = useState(false);

@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 
-import LoginModal from "./pages/LoginModal";
-import RegisterModal from "./components/RegisterModal";
+import LoginModal from "./pages/authPage/LoginModal";
+import RegisterModal from "./pages/authPage/RegisterModal";
 
 import AdminLogin from "./components/admin/AdminLogin";
 import AdminDashboard from "./components/admin/AdminDashboard";

@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { Link as ScrollLink } from 'react-scroll';
 import { FaArrowUp } from "react-icons/fa";
 import { motion, AnimatePresence } from 'framer-motion';
-import LoginModal from '../pages/LoginModal';
-import RegisterModal from './RegisterModal';
+import LoginModal from '../pages/authPage/LoginModal';
+import RegisterModal from '../pages/authPage/RegisterModal';
 
 const courseData = [
   {
