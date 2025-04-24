@@ -17,7 +17,8 @@ const studentSchema = new mongoose.Schema({
 
   // Academic Info
   grade: String,
-  academicYear: String,
+  bsAcademicYear: String,
+  adAcademicYear: String,
   month: String,
   medium: String,
   schoolName: String,
@@ -35,11 +36,7 @@ const studentSchema = new mongoose.Schema({
   },
 
   // Contact Info
-  contact: {
-    phone: String,
-    whatsapp: String,
-    alternate: String
-  },
+  contact: String,
 
   email: {
     type: String,

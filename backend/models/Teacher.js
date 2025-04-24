@@ -11,11 +11,7 @@ const teacherSchema = new mongoose.Schema({
   grade: String, // The grade level the teacher is responsible for
   academicYear: String, // Current academic year
   department: String, // Department or faculty the teacher belongs to
-  contact: {
-    phone: String,
-    email: String,
-    whatsapp: String,
-  },
+  contact: String,
   address: {
     street: { type: String },
     city: { type: String },

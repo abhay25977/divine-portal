@@ -3,16 +3,15 @@ import Counter from '../models/Counter.js'; // adjust the path
 import jwt from 'jsonwebtoken';
 
 // ========== Generate Student ID ==========
-const generateStudentId = async ({ branch, district, academicYear, medium, grade }) => {
+const generateStudentId = async ({ branch, district, adAcademicYear, medium, grade }) => {
   const firstBranch = branch?.charAt(0).toUpperCase() || "X";
   const firstDistrict = district?.charAt(0).toUpperCase() || "X";
-  const yearDigits = academicYear?.slice(-2) || "00";
+  const yearDigits = adAcademicYear?.slice(-2) || "00";
   const firstMedium = medium?.charAt(0).toUpperCase() || "X";
   const classPart = grade?.toString().padStart(2, '0') || "00";
 
   const prefix = `${firstBranch}${firstDistrict}${yearDigits}${firstMedium}${classPart}`;
 
-  // Update or create the counter for this prefix
   const counter = await Counter.findOneAndUpdate(
     { prefix },
     { $inc: { seq: 1 } },
@@ -24,6 +23,7 @@ const generateStudentId = async ({ branch, district, academicYear, medium, grade
 
   return studentId;
 };
+
 
 
 export const registerStudent = async (req, res) => {
@@ -43,7 +43,8 @@ export const registerStudent = async (req, res) => {
       courseType,
       courseDuration,
       grade,
-      academicYear,
+      bsAcademicYear,
+      adAcademicYear,
       month,
       medium,
       schoolName,
@@ -58,13 +59,12 @@ export const registerStudent = async (req, res) => {
       fatherOccupation,
       motherOccupation,
       guardianName,
-      guardianRelation
+      guardianRelation,
+      profilePicture
     } = req.body;
 
-    let profilePicture = req.body.profilePicture;
-
     // Basic validation
-    if (!email || !password || !firstName || !dob || !grade || !academicYear || !medium || !gender || !branch) {
+    if (!email || !password || !firstName || !dob || !grade || !adAcademicYear || !medium || !gender || !branch) {
       return res.status(400).json({ message: "Required fields are missing" });
     }
 
@@ -73,14 +73,13 @@ export const registerStudent = async (req, res) => {
       return res.status(409).json({ message: "Email already registered" });
     }
 
-    const studentId = await generateStudentId({ branch, district, academicYear, medium, grade });
+    const studentId = await generateStudentId({ branch, district, adAcademicYear, medium, grade });
 
     if (!studentId) {
       return res.status(500).json({ message: "Failed to generate student ID" });
     }
 
     const newStudent = new Student({
-      // Core Info
       branch,
       district,
       firstName,
@@ -94,25 +93,18 @@ export const registerStudent = async (req, res) => {
       percentagePreviousClass,
       courseType,
       courseDuration,
-
-      // Academic Info
       grade,
-      academicYear,
+      bsAcademicYear,
+      adAcademicYear,
       month,
       medium,
       schoolName,
       subjects,
       totalSubjects: subjects?.length || 0,
-
-      // Address
       address,
-
-      // Auth & Contact
       email,
       password,
       contact,
-
-      // Guardian
       fatherName,
       motherName,
       fatherContact,
@@ -120,21 +112,20 @@ export const registerStudent = async (req, res) => {
       motherOccupation,
       guardianName,
       guardianRelation,
-      studentId,
       profilePicture,
+      studentId,
     });
 
     await newStudent.save();
 
-    res.status(201).json({
-      studentId,
-    });
+    res.status(201).json({ studentId });
 
   } catch (error) {
     console.error("Error in student registration:", error);
     res.status(500).json({ message: "Server Error" });
   }
 };
+
 
 export const loginStudent = async (req, res) => {
   const { email, password } = req.body;

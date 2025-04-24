@@ -8,8 +8,23 @@ import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from 'date-fns';
+import Select from 'react-select';
 
-const RegisterModal = ({ isOpen, onClose }) => {
+const RegisterModal = ({ isOpen, onClose, value, onChange }) => {
+
+
+  const subjectOptions = [
+    { value: 'Nepali', label: 'Nepali' },
+    { value: 'English', label: 'English' },
+    { value: 'Compulsary Math', label: 'Compulsary Math' },
+    { value: 'Science', label: 'Science' },
+    { value: 'Optional Math', label: 'Optional Math' },
+    { value: 'Accounts', label: 'Accounts' },
+    { value: 'Computer Course', label: 'Computer Course' },
+    { value: '10th Bridge Course', label: '10th Bridge Course' },
+    // Add more subjects here
+  ];
+
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -28,7 +43,8 @@ const RegisterModal = ({ isOpen, onClose }) => {
     courseType: "",
     courseDuration: "",
     grade: "",
-    academicYear: "",
+    bsAcademicYear: "",
+    adAcademicYear: "",
     month: "",
     medium: "",
     schoolName: "",
@@ -47,6 +63,8 @@ const RegisterModal = ({ isOpen, onClose }) => {
     guardianRelation: "",
     studentId: "",
     profilePicture: "",
+    countryCode: '',
+    fatherCountryCode: '',
   });
 
   const [message, setMessage] = useState("");
@@ -122,7 +140,8 @@ const RegisterModal = ({ isOpen, onClose }) => {
         courseType: "",
         courseDuration: "",
         grade: "",
-        academicYear: "",
+        bsAcademicYear: "",
+        adAcademicYear: "",
         month: "",
         medium: "",
         schoolName: "",
@@ -140,6 +159,8 @@ const RegisterModal = ({ isOpen, onClose }) => {
         guardianRelation: "",
         studentId: "",
         profilePicture: "",
+        countryCode: '',
+        fatherCountryCode: '',
       });
 
       setTimeout(() => {
@@ -167,7 +188,8 @@ const RegisterModal = ({ isOpen, onClose }) => {
       formData.courseType,
       formData.courseDuration,
       formData.grade,
-      formData.academicYear,
+      formData.bsAcademicYear,
+      formData.adAcademicYear,
       formData.month,
       formData.medium,
       formData.schoolName,
@@ -179,6 +201,8 @@ const RegisterModal = ({ isOpen, onClose }) => {
       formData.motherOccupation,
       formData.guardianName,
       formData.guardianRelation,
+      formData.countryCode,
+      formData.fatherCountryCode,
     ];
 
     // If all required fields are filled, enable the Next button
@@ -303,28 +327,47 @@ const RegisterModal = ({ isOpen, onClose }) => {
                       onChange={handleChange}
                       className="input-style"
                     />
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 sm:w-auto">
                       <select
                         name="countryCode"
                         value={formData.countryCode}
-                        onChange={handleChange}
-                        className="px-3 py-2 bg-gray-100 border border-gray-300 rounded text-sm"
+                        onChange={(e) => {
+                          const selectedCode = e.target.value;
+                          setFormData({
+                            ...formData,
+                            countryCode: selectedCode,
+                            contact: selectedCode + ' ' // Pre-fill phone input with country code and space
+                          });
+                        }}
+                        className="w-36 sm:w-40 text-sm px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition duration-200"
+
                       >
-                        <option value="+91">Nepal (+977)</option>
-                        <option value="+977">India (+91)</option>
+                        <option>Select Code</option>
+                        <option value="+977">Nepal (+977)</option>
+                        <option value="+91">India (+91)</option>
                         <option value="+1">USA (+1)</option>
                         <option value="+44">UK (+44)</option>
+                        <option value="+971">UAE (+971)</option>
+                        <option value="+966">Saudi Arabia (+966)</option>
+                        <option value="+90">Turkey (+90)</option>
+                        <option value="+7">Russia (+7)</option>
+                        <option value="+34">Spain (+34)</option>
+                        <option value="+55">Brazil (+55)</option>
+                        <option value="+65">Singapore (+65)</option>
                       </select>
+
                       <input
                         type="text"
                         name="contact"
-                        placeholder="Enter phone number"
+                        placeholder="Your Contact"
                         required
                         value={formData.contact}
-                        onChange={handleChange}
-                        onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, ''); }}
-                        maxLength={10} // Optional: limit to 10 digits
-                        className="input-style placeholder:text-sm"
+                        onChange={(e) => {
+                          const inputValue = e.target.value.replace(/[^0-9+ ]/g, '');
+                          setFormData({ ...formData, contact: inputValue });
+                        }}
+                        maxLength={15}
+                        className="w-full sm:w-3/4 px-3 py-2 border border-gray-300 rounded-md text-sm placeholder:text-sm"
                       />
                     </div>
 
@@ -393,15 +436,20 @@ const RegisterModal = ({ isOpen, onClose }) => {
                         }}
                         className="input-style"
                       />
-                      <input
-                        type="text"
+
+                      <select
                         name="branch"
                         required
-                        placeholder="Branch applied for..."
                         value={formData.branch}
                         onChange={handleChange}
                         className="input-style"
-                      />
+                      >
+                        <option value="">Select Branch</option>
+                        <option value="Malangwa, Sarlahi">Malangwa, Sarlahi</option>
+                        <option value="Barahathwa, Sarlahi">Barahathwa, Sarlahi</option>
+                        <option value="Bailbas, Sarlahi">Bailbas, Sarlahi</option>
+                      </select>
+
                       <select
                         name="gender"
                         required
@@ -414,11 +462,12 @@ const RegisterModal = ({ isOpen, onClose }) => {
                         <option value="Female">Female</option>
                         <option value="Other">Other</option>
                       </select>
+
                       <input
                         type="text"
                         name="grade"
                         required
-                        placeholder="Grade (eg. 11, 12)"
+                        placeholder="Grade Level (eg. 11, 12)"
                         value={formData.grade}
                         onChange={(e) => {
                           const value = e.target.value;
@@ -438,15 +487,39 @@ const RegisterModal = ({ isOpen, onClose }) => {
                         onChange={handleChange}
                         className="input-style"
                       />
-                      <input
-                        type="text"
-                        name="academicYear"
-                        required
-                        placeholder="Academic Year (e.g. 2025-2026)"
-                        value={formData.academicYear}
-                        onChange={handleChange}
-                        className="input-style"
-                      />
+                      <div className="mb-4">
+                        <label className="block mb-1 font-medium">Academic Year</label>
+                        <div className="flex gap-2 flex-col sm:flex-row">
+                          <select
+                            name="bsAcademicYear"
+                            value={formData.bsAcademicYear}
+                            onChange={handleChange}
+                            required
+                            className="text-sm px-3 py-2 bg-gray-100 border border-gray-300 rounded-md w-full sm:w-auto"
+                          >
+                            <option value="">Select B.S. Year</option>
+                            <option value="2080-2081">2080-2081 B.S.</option>
+                            <option value="2081-2082">2081-2082 B.S.</option>
+                            <option value="2082-2083">2082-2083 B.S.</option>
+                            {/* Add more B.S. years as needed */}
+                          </select>
+
+                          <select
+                            name="adAcademicYear"
+                            value={formData.adAcademicYear}
+                            onChange={handleChange}
+                            required
+                            className="text-sm px-3 py-2 bg-gray-100 border border-gray-300 rounded-md w-full sm:w-auto"
+                          >
+                            <option value="">Select A.D. Year</option>
+                            <option value="2023-2024">2023-2024 A.D.</option>
+                            <option value="2024-2025">2024-2025 A.D.</option>
+                            <option value="2025-2026">2025-2026 A.D.</option>
+                            {/* Add more A.D. years as needed */}
+                          </select>
+                        </div>
+                      </div>
+
                       <select
                         name="month"
                         required
@@ -459,15 +532,18 @@ const RegisterModal = ({ isOpen, onClose }) => {
                           <option key={month} value={month}>{month}</option>
                         ))}
                       </select>
-                      <input
+                      <select
                         type="text"
                         name="medium"
                         required
-                        placeholder="Medium (e.g. English, Hindi)"
                         value={formData.medium}
                         onChange={handleChange}
                         className="input-style"
-                      />
+                      >
+                        <option value="">Select Medium</option>
+                        <option value="English">Nepali</option>
+                        <option value="Hindi">English</option>
+                      </select>
                       <input
                         type="text"
                         name="schoolName"
@@ -477,15 +553,41 @@ const RegisterModal = ({ isOpen, onClose }) => {
                         onChange={handleChange}
                         className="input-style"
                       />
-                      <input
-                        type="text"
+                      <Select
+                        isMulti
                         name="subjects"
-                        required
-                        placeholder="Subjects (comma separated)"
-                        value={formData.subjects}
-                        onChange={handleChange}
-                        className="input-style"
+                        options={subjectOptions}
+                        value={subjectOptions.filter(option => formData.subjects.includes(option.value))}
+                        onChange={(selectedOptions) =>
+                          setFormData({
+                            ...formData,
+                            subjects: selectedOptions.map(option => option.value),
+                          })
+                        }
+                        placeholder="Select subjects"
+                        className="w-full sm:w-auto"
+                        styles={{
+                          control: (base) => ({
+                            ...base,
+                            minHeight: '38px',
+                            borderRadius: '0.375rem',
+                            borderColor: '#D1D5DB',
+                            backgroundColor: '#F9FAFB',
+                            fontSize: '0.875rem',
+                          }),
+                          multiValue: (styles) => ({
+                            ...styles,
+                            backgroundColor: '#E5E7EB',
+                            borderRadius: '4px',
+                            padding: '2px 6px',
+                          }),
+                          placeholder: (styles) => ({
+                            ...styles,
+                            fontSize: '0.875rem',
+                          }),
+                        }}
                       />
+
                       <input
                         type="text"
                         name="courseType"
@@ -526,28 +628,48 @@ const RegisterModal = ({ isOpen, onClose }) => {
                       />
                       <div className="flex items-center gap-2">
                         <select
-                          name="countryCode"
-                          value={formData.countryCode}
-                          onChange={handleChange}
-                          className="px-3 py-2 bg-gray-100 border border-gray-300 rounded text-sm"
+                          name="fatherCountryCode"
+                          value={formData.fatherCountryCode}
+                          onChange={(e) => {
+                            const selectedCode = e.target.value;
+                            setFormData({
+                              ...formData,
+                              fatherCountryCode: selectedCode,
+                              fatherContact: selectedCode + ' ' // Pre-fill with selected code
+                            });
+                          }}
+                          className="text-xs px-3 py-2 bg-gray-100 border border-gray-300 rounded-md"
                         >
-                          <option value="+91">Nepal (+977)</option>
-                          <option value="+977">India (+91)</option>
+                          <option>Select Code</option>
+                          <option value="+977">Nepal (+977)</option>
+                          <option value="+91">India (+91)</option>
                           <option value="+1">USA (+1)</option>
                           <option value="+44">UK (+44)</option>
+                          <option value="+971">UAE (+971)</option>
+                          <option value="+966">Saudi Arabia (+966)</option>
+                          <option value="+90">Turkey (+90)</option>
+                          <option value="+7">Russia (+7)</option>
+                          <option value="+34">Spain (+34)</option>
+                          <option value="+55">Brazil (+55)</option>
+                          <option value="+65">Singapore (+65)</option>
                         </select>
+
                         <input
                           type="text"
                           name="fatherContact"
                           placeholder="Father's Contact"
                           required
                           value={formData.fatherContact}
-                          onChange={handleChange}
-                          onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, ''); }}
-                          maxLength={10} // Optional: limit to 10 digits
-                          className="input-style placeholder:text-sm"
+                          onChange={(e) => {
+                            const inputValue = e.target.value.replace(/[^0-9+ ]/g, ''); // allow numbers, + and space
+                            setFormData({ ...formData, fatherContact: inputValue });
+                          }}
+                          maxLength={15}
+                          className="w-full sm:w-3/4 px-3 py-2 border border-gray-300 rounded-md text-sm placeholder:text-sm"
                         />
                       </div>
+
+
                       <input
                         type="text"
                         name="fatherOccupation"
@@ -594,9 +716,9 @@ const RegisterModal = ({ isOpen, onClose }) => {
                           className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
                            file:rounded-md file:border-0
                            file:text-sm file:font-semibold
-                          file:bg-yellow-50 file:text-yellow-700
-                          hover:file:bg-yellow-100
-                          dark:file:bg-gray-800 dark:file:text-yellow-400 dark:hover:file:bg-gray-700"
+                         file:bg-yellow-50 file:text-yellow-700
+                         hover:file:bg-yellow-100
+                         dark:file:bg-gray-800 dark:file:text-yellow-400 dark:hover:file:bg-gray-700"
                         />
 
                         {isUploading && (
@@ -609,14 +731,11 @@ const RegisterModal = ({ isOpen, onClose }) => {
                           </div>
                         )}
 
-                        {formData.profilePicture && !isUploading && (
-                          <img
-                            src={formData.profilePicture}
-                            alt="Profile Preview"
-                            className="mt-2 w-20 h-20 rounded-full object-cover border border-gray-300 dark:border-gray-600"
-                          />
+                        {!isUploading && formData.profilePicture && uploadProgress === 100 && (
+                          <div className="mt-2 text-green-600 font-medium text-sm">"Image Uploaded"</div>
                         )}
                       </div>
+
 
                     </div>
                   )}
